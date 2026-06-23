@@ -51,6 +51,25 @@ services:
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
 
+  # Inference worker. Heavy image (torch + opencv + ultralytics) — opt in via
+  # `docker compose --profile worker run --rm worker --source ... --rules ...`.
+  # Not started by default because most users only want the API + frontend up.
+  worker:
+    profiles: ["worker"]
+    build:
+      context: .
+      dockerfile: docker/worker/Dockerfile
+    image: construction_safety_ai-worker:latest
+    container_name: cs_worker
+    environment:
+      CS_API_URL: ${CS_API_URL:-http://api:8000}
+    depends_on:
+      - api
+    volumes:
+      - ./outputs:/app/outputs
+      - ./datasets:/app/datasets:ro
+      - ./config:/app/config:ro
+
 volumes:
   cs_pg_data:
     name: cs_pg_data

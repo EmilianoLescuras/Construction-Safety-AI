@@ -1,0 +1,10 @@
+# Worker container deps: full ML stack for detection + tracking + rule engine,
+# plus httpx for posting events to the API. NO server/DB libs (sqlalchemy,
+# fastapi, alembic) — the worker is a client of the API.
+ultralytics>=8.3.0
+torch>=2.1.0
+torchvision>=0.16.0
+opencv-python>=4.8.0
+numpy>=1.26.0
+lap>=0.5.12
+httpx>=0.27.0
