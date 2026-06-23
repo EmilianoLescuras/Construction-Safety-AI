@@ -19,6 +19,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.backend import crud, models, schemas  # noqa: E402
 from src.backend.db import SessionLocal  # noqa: E402
+from src.backend.paths import to_repo_relative  # noqa: E402
 from src.tracking import iter_jsonl  # noqa: E402
 
 
@@ -74,6 +75,7 @@ def _load_audit(db, audit_path: Path, event_index: dict[tuple, int]) -> None:
             path = ev_files.get(kind)
             if not path:
                 continue
+            path = to_repo_relative(path)
             already = db.query(models.EvidenceFile).filter_by(
                 event_id=event_id, kind=kind, path=path
             ).first()

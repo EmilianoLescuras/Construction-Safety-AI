@@ -20,6 +20,7 @@ from src.alerts.base import AlertContext, AlertSink
 from src.backend import models
 from src.backend.config import settings
 from src.backend.db import _engine_kwargs
+from src.backend.paths import to_repo_relative
 
 
 class DbSink(AlertSink):
@@ -71,7 +72,7 @@ class DbSink(AlertSink):
         for kind, path in (("full", ctx.full_frame_path), ("crop", ctx.crop_path)):
             if not path:
                 continue
-            p = str(path)
+            p = to_repo_relative(path)
             already = db.execute(
                 select(models.EvidenceFile).where(
                     models.EvidenceFile.event_id == event_id,
