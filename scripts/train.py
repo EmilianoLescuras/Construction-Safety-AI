@@ -70,6 +70,12 @@ def main() -> None:
     parser.add_argument("--run-name", default=None, help="Run name (default: derived from model + epochs)")
     parser.add_argument("--device", default=None, help="Override device autodetect (mps / cuda:0 / cpu)")
     parser.add_argument("--patience", type=int, default=30, help="EarlyStopping patience (Ultralytics)")
+    parser.add_argument(
+        "--cache",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Cache images in RAM (--cache / --no-cache). Big speedup for small datasets.",
+    )
     args = parser.parse_args()
 
     if not DATA_YAML.exists():
@@ -95,6 +101,7 @@ def main() -> None:
         name=run_name,
         exist_ok=True,
         patience=args.patience,
+        cache=args.cache,
         verbose=True,
     )
 
