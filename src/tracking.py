@@ -18,15 +18,12 @@ import json
 from collections.abc import Iterable
 from pathlib import Path
 
-import cv2
-import numpy as np
-
 from src.colors import CATEGORY_COLORS
 
 
 def track_frame(
     model,
-    frame: np.ndarray,
+    frame,
     conf_threshold: float = 0.25,
     iou_threshold: float = 0.45,
     tracker: str = "bytetrack.yaml",
@@ -44,12 +41,15 @@ def track_frame(
 
 
 def annotate_tracked_frame(
-    frame: np.ndarray,
+    frame,
     result,
     class_names: list[str],
     conf_threshold: float = 0.0,
-) -> np.ndarray:
+):
     """Draw color-coded bboxes + 'ID:<n> Class 0.XX' labels."""
+    import cv2
+    import numpy as np
+
     out = frame.copy()
     boxes = getattr(result, "boxes", None)
     if boxes is None or len(boxes) == 0:
@@ -93,6 +93,8 @@ def annotate_tracked_frame(
 
 def tracks_to_record(frame_id: int, ts: float, result, class_names: list[str]) -> dict:
     """Serializable per-frame snapshot of all tracked objects."""
+    import numpy as np
+
     record: dict = {"frame": frame_id, "ts": ts, "tracks": []}
     boxes = getattr(result, "boxes", None)
     if boxes is None or len(boxes) == 0:
