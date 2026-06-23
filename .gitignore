@@ -60,6 +60,9 @@ datasets/test/**/*
 outputs/images/**/*
 outputs/videos/**/*
 outputs/logs/**/*
+outputs/*.db
+outputs/*.db-journal
+outputs/*.sqlite*
 !outputs/**/.gitkeep
 !outputs/**/README.md
 

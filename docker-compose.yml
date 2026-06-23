@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cs_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-construction_safety}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: ${POSTGRES_DB:-construction_safety}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - cs_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cs_user} -d ${POSTGRES_DB:-construction_safety}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  cs_pg_data:
+    name: cs_pg_data
