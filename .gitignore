@@ -60,6 +60,7 @@ datasets/test/**/*
 outputs/images/**/*
 outputs/videos/**/*
 outputs/logs/**/*
+outputs/demo_gallery/
 outputs/*.db
 outputs/*.db-journal
 outputs/*.sqlite*

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import {
   Bar,
@@ -12,6 +13,7 @@ import {
 } from "recharts";
 
 import { api } from "@/lib/api";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -84,6 +86,27 @@ export default function Page() {
 
   return (
     <div className="space-y-8">
+      <Card className="overflow-hidden border-red-500/30 bg-gradient-to-br from-red-500/10 via-background to-amber-500/5">
+        <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-1">
+            <div className="text-xs font-semibold uppercase tracking-wider text-red-600">
+              New
+            </div>
+            <h2 className="text-xl font-semibold tracking-tight">
+              Watch the model catch unsafe workers — live demo with video + 24
+              test images
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              See annotated predictions, toggle boxes on/off, and filter by
+              violation vs compliant.
+            </p>
+          </div>
+          <Link href="/demo" className={buttonVariants({ size: "lg" })}>
+            Open the demo →
+          </Link>
+        </CardContent>
+      </Card>
+
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
         <p className="mt-1 text-sm text-muted-foreground">

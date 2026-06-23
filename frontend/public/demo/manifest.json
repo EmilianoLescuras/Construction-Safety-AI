@@ -1,0 +1,414 @@
+{
+  "items": [
+    {
+      "id": "img_15",
+      "original": "originals/img_15.jpg",
+      "prediction": "predictions/img_15.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "VIOLATION",
+      "persons": 4,
+      "violations": 5,
+      "compliances": 0,
+      "detected": {
+        "NO-Safety Vest": 3,
+        "Person": 4,
+        "NO-Hardhat": 2
+      },
+      "source_name": "NX_img_177_jpg.rf.4ccbaefd806754350484c950eddddae9.jpg"
+    },
+    {
+      "id": "img_11",
+      "original": "originals/img_11.jpg",
+      "prediction": "predictions/img_11.jpg",
+      "width": 800,
+      "height": 600,
+      "status": "VIOLATION",
+      "persons": 2,
+      "violations": 4,
+      "compliances": 2,
+      "detected": {
+        "NO-Safety Vest": 2,
+        "Person": 2,
+        "Hardhat": 2,
+        "NO-Mask": 2
+      },
+      "source_name": "ppe_0018_jpg.rf.61cee6d5c5e979caf9f683e2396d6a31.jpg"
+    },
+    {
+      "id": "img_12",
+      "original": "originals/img_12.jpg",
+      "prediction": "predictions/img_12.jpg",
+      "width": 500,
+      "height": 333,
+      "status": "VIOLATION",
+      "persons": 6,
+      "violations": 4,
+      "compliances": 6,
+      "detected": {
+        "Person": 6,
+        "NO-Safety Vest": 4,
+        "Safety Vest": 2,
+        "Hardhat": 4
+      },
+      "source_name": "004063_jpg.rf.07ed5d8440397b751df1dc92f42f590d.jpg"
+    },
+    {
+      "id": "img_23",
+      "original": "originals/img_23.jpg",
+      "prediction": "predictions/img_23.jpg",
+      "width": 960,
+      "height": 1706,
+      "status": "VIOLATION",
+      "persons": 2,
+      "violations": 3,
+      "compliances": 1,
+      "detected": {
+        "Person": 2,
+        "Ladder": 1,
+        "NO-Safety Vest": 2,
+        "Hardhat": 1,
+        "NO-Hardhat": 1
+      },
+      "source_name": "class1_150_jpg.rf.d2b436b4d58227a46a8a82a4f8ca2f19.jpg"
+    },
+    {
+      "id": "img_06",
+      "original": "originals/img_06.jpg",
+      "prediction": "predictions/img_06.jpg",
+      "width": 888,
+      "height": 864,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 2,
+      "compliances": 1,
+      "detected": {
+        "Mask": 1,
+        "Person": 1,
+        "NO-Hardhat": 1,
+        "NO-Safety Vest": 1
+      },
+      "source_name": "RPReplay_Final1667001201_MP4-100_jpg.rf.c80c7b8ef3a0b4a1f06fa031706bd5bb.jpg"
+    },
+    {
+      "id": "img_07",
+      "original": "originals/img_07.jpg",
+      "prediction": "predictions/img_07.jpg",
+      "width": 960,
+      "height": 1706,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 2,
+      "compliances": 1,
+      "detected": {
+        "NO-Safety Vest": 1,
+        "Person": 1,
+        "Mask": 1,
+        "NO-Hardhat": 1
+      },
+      "source_name": "IMG_0871_mp4-11_jpg.rf.265c6f653789fa19bfa5fb6a02ba64a1.jpg"
+    },
+    {
+      "id": "img_08",
+      "original": "originals/img_08.jpg",
+      "prediction": "predictions/img_08.jpg",
+      "width": 256,
+      "height": 256,
+      "status": "VIOLATION",
+      "persons": 0,
+      "violations": 2,
+      "compliances": 0,
+      "detected": {
+        "NO-Mask": 2
+      },
+      "source_name": "3e7e40981ddd4cdb055c7ffe4c2af5d8_jpg.rf.70ccb220597f8c71dd58a8220ff7e0ce.jpg"
+    },
+    {
+      "id": "img_10",
+      "original": "originals/img_10.jpg",
+      "prediction": "predictions/img_10.jpg",
+      "width": 500,
+      "height": 335,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 2,
+      "compliances": 0,
+      "detected": {
+        "Person": 1,
+        "NO-Hardhat": 1,
+        "NO-Mask": 1
+      },
+      "source_name": "2009_000059_jpg.rf.925638bf60a734b50bf521d448b47a14.jpg"
+    },
+    {
+      "id": "img_19",
+      "original": "originals/img_19.jpg",
+      "prediction": "predictions/img_19.jpg",
+      "width": 960,
+      "height": 640,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 2,
+      "compliances": 1,
+      "detected": {
+        "NO-Safety Vest": 1,
+        "Person": 1,
+        "Mask": 1,
+        "NO-Hardhat": 1
+      },
+      "source_name": "Movie-on-10-31-22-at-10_08-AM_mov-20_jpg.rf.62a6b69bb905dd379abb4f5c3b377f64.jpg"
+    },
+    {
+      "id": "img_24",
+      "original": "originals/img_24.jpg",
+      "prediction": "predictions/img_24.jpg",
+      "width": 960,
+      "height": 640,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 2,
+      "compliances": 1,
+      "detected": {
+        "NO-Safety Vest": 1,
+        "Mask": 1,
+        "Person": 1,
+        "NO-Hardhat": 1
+      },
+      "source_name": "Movie-on-10-31-22-at-10_08-AM_mov-24_jpg.rf.6defdbd92521d073c7ba37a0ebdcaf4e.jpg"
+    },
+    {
+      "id": "img_01",
+      "original": "originals/img_01.jpg",
+      "prediction": "predictions/img_01.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 1,
+      "compliances": 3,
+      "detected": {
+        "trailer": 1,
+        "vehicle": 1,
+        "Person": 1,
+        "Hardhat": 1,
+        "Ladder": 1,
+        "Safety Vest": 1,
+        "truck": 1,
+        "van": 1,
+        "NO-Mask": 1,
+        "Gloves": 1
+      },
+      "source_name": "youtube-840_jpg.rf.5676c6137c0e23c57975f64e7867d472.jpg"
+    },
+    {
+      "id": "img_04",
+      "original": "originals/img_04.jpg",
+      "prediction": "predictions/img_04.jpg",
+      "width": 960,
+      "height": 1706,
+      "status": "VIOLATION",
+      "persons": 1,
+      "violations": 1,
+      "compliances": 0,
+      "detected": {
+        "Person": 1,
+        "Ladder": 1,
+        "NO-Safety Vest": 1
+      },
+      "source_name": "class2_131_jpg.rf.b9a18e696c35468940db04ba6c72863a.jpg"
+    },
+    {
+      "id": "img_02",
+      "original": "originals/img_02.jpg",
+      "prediction": "predictions/img_02.jpg",
+      "width": 183,
+      "height": 276,
+      "status": "COMPLIANT",
+      "persons": 2,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "Safety Cone": 2,
+        "Person": 2
+      },
+      "source_name": "777_jpg.rf.b4206061fa668b68e9a276402b853fb7.jpg"
+    },
+    {
+      "id": "img_03",
+      "original": "originals/img_03.jpg",
+      "prediction": "predictions/img_03.jpg",
+      "width": 500,
+      "height": 372,
+      "status": "COMPLIANT",
+      "persons": 1,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "Person": 1,
+        "Safety Cone": 1
+      },
+      "source_name": "003357_jpg.rf.01d5211b23f4909ec41ace9068be0966.jpg"
+    },
+    {
+      "id": "img_05",
+      "original": "originals/img_05.jpg",
+      "prediction": "predictions/img_05.jpg",
+      "width": 640,
+      "height": 360,
+      "status": "NO-DETECTION",
+      "persons": 0,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "Safety Cone": 4,
+        "vehicle": 1
+      },
+      "source_name": "autox3_mp4-65_jpg.rf.9b9183616fe63cf66688ff983fbb9426.jpg"
+    },
+    {
+      "id": "img_09",
+      "original": "originals/img_09.jpg",
+      "prediction": "predictions/img_09.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "COMPLIANT",
+      "persons": 1,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "truck": 1,
+        "Person": 1,
+        "machinery": 1
+      },
+      "source_name": "youtube-34_jpg.rf.c50244a7998c9a077f60a994a4c8c42e.jpg"
+    },
+    {
+      "id": "img_13",
+      "original": "originals/img_13.jpg",
+      "prediction": "predictions/img_13.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "COMPLIANT",
+      "persons": 1,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "Excavator": 1,
+        "Person": 1
+      },
+      "source_name": "youtube-671_jpg.rf.a1c4bc01a4cc5e48ab18b9ddae536d6e.jpg"
+    },
+    {
+      "id": "img_14",
+      "original": "originals/img_14.jpg",
+      "prediction": "predictions/img_14.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "COMPLIANT",
+      "persons": 1,
+      "violations": 0,
+      "compliances": 3,
+      "detected": {
+        "Person": 1,
+        "Safety Vest": 2,
+        "Gloves": 1
+      },
+      "source_name": "youtube-471_jpg.rf.609082a0f769381e3db70ce5362d5cd3.jpg"
+    },
+    {
+      "id": "img_16",
+      "original": "originals/img_16.jpg",
+      "prediction": "predictions/img_16.jpg",
+      "width": 640,
+      "height": 360,
+      "status": "NO-DETECTION",
+      "persons": 0,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "Safety Cone": 5,
+        "vehicle": 1
+      },
+      "source_name": "autox3_mp4-187_jpg.rf.cb0f80f43576390bbcb154663c863d11.jpg"
+    },
+    {
+      "id": "img_17",
+      "original": "originals/img_17.jpg",
+      "prediction": "predictions/img_17.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "COMPLIANT",
+      "persons": 1,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "Excavator": 1,
+        "Person": 1
+      },
+      "source_name": "youtube-213_jpg.rf.286b3f7c48d72801c1dfaa60073639dc.jpg"
+    },
+    {
+      "id": "img_18",
+      "original": "originals/img_18.jpg",
+      "prediction": "predictions/img_18.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "COMPLIANT",
+      "persons": 1,
+      "violations": 0,
+      "compliances": 1,
+      "detected": {
+        "Safety Vest": 1,
+        "Person": 1
+      },
+      "source_name": "youtube-472_jpg.rf.9d9e1350e93628fede844309b415185c.jpg"
+    },
+    {
+      "id": "img_20",
+      "original": "originals/img_20.jpg",
+      "prediction": "predictions/img_20.jpg",
+      "width": 450,
+      "height": 300,
+      "status": "NO-DETECTION",
+      "persons": 0,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "dump truck": 1
+      },
+      "source_name": "construction-651-_jpg.rf.e4b76cdebb4015b39d8c16e13076f4c4.jpg"
+    },
+    {
+      "id": "img_21",
+      "original": "originals/img_21.jpg",
+      "prediction": "predictions/img_21.jpg",
+      "width": 960,
+      "height": 540,
+      "status": "NO-DETECTION",
+      "persons": 0,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "dump truck": 1,
+        "wheel loader": 1
+      },
+      "source_name": "construction-2-_mp4-84_jpg.rf.8af35d48b97219dcbc1e009103610e05.jpg"
+    },
+    {
+      "id": "img_22",
+      "original": "originals/img_22.jpg",
+      "prediction": "predictions/img_22.jpg",
+      "width": 450,
+      "height": 300,
+      "status": "NO-DETECTION",
+      "persons": 0,
+      "violations": 0,
+      "compliances": 0,
+      "detected": {
+        "dump truck": 1,
+        "wheel loader": 1
+      },
+      "source_name": "construction-639-_jpg.rf.6edc79f4ee25c236a4221a23003dc90d.jpg"
+    }
+  ]
+}
