@@ -76,7 +76,8 @@ def main() -> None:
                 annotated = annotate_tracked_frame(frame, res, model.names, conf_threshold=args.conf)
                 writer.write(annotated)
 
-                rec = tracks_to_record(i, time.time(), res, model.names)
+                video_ts = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0
+                rec = tracks_to_record(i, video_ts, res, model.names)
                 jsonl.write(rec)
                 for t in rec["tracks"]:
                     if t["id"] >= 0:

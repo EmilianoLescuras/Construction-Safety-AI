@@ -1,0 +1,31 @@
+{
+  "_doc": "PPE compliance rules. Each rule emits a ViolationEvent when a Person track has a violation_class detection (NO-*) spatially associated with them for at least min_violation_seconds. cooldown_seconds prevents re-emitting the same event for the same (person, rule) until the cooldown elapses after the violation clears or the previous event was emitted.",
+  "rules": {
+    "helmet": {
+      "enabled": true,
+      "violation_classes": ["NO-Hardhat"],
+      "compliance_classes": ["Hardhat"],
+      "min_violation_seconds": 3.0,
+      "cooldown_seconds": 30.0
+    },
+    "vest": {
+      "enabled": true,
+      "violation_classes": ["NO-Safety Vest"],
+      "compliance_classes": ["Safety Vest"],
+      "min_violation_seconds": 3.0,
+      "cooldown_seconds": 30.0
+    },
+    "mask": {
+      "enabled": false,
+      "violation_classes": ["NO-Mask"],
+      "compliance_classes": ["Mask"],
+      "min_violation_seconds": 3.0,
+      "cooldown_seconds": 30.0
+    }
+  },
+  "association": {
+    "person_class": "Person",
+    "strategy": "center_in_smallest_person",
+    "min_person_conf": 0.3
+  }
+}
