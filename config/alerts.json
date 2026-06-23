@@ -1,0 +1,26 @@
+{
+  "_doc": "Alert dispatch configuration. Each sink is independent; a failure in one does not stop the others. Telegram and email read their secrets from .env (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, SMTP_*, ALERT_EMAIL_*). The 'evidence' section controls cropped-image rendering for each dispatched event.",
+  "sinks": {
+    "console": {
+      "enabled": true
+    },
+    "telegram": {
+      "enabled": false,
+      "send_photo": true,
+      "parse_mode": "Markdown"
+    },
+    "email": {
+      "enabled": false,
+      "attach_evidence": true,
+      "subject_prefix": "[Construction Safety AI]"
+    }
+  },
+  "evidence": {
+    "enabled": true,
+    "out_dir": "outputs/images/evidence",
+    "save_full_frame": true,
+    "save_crop": true,
+    "crop_padding": 0.1,
+    "annotate_full_frame": true
+  }
+}
