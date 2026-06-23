@@ -1,0 +1,32 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [
+    ".venv",
+    "alembic/versions",
+    "datasets",
+    "runs",
+    "models",
+    "outputs",
+    "notebooks",
+    "frontend",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "W",   # pycodestyle warnings
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # function call in default arg (FastAPI Depends/Query pattern)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts insert PROJECT_ROOT into sys.path before importing src.* — that is
+# intentional and forces module-level imports below the path tweak.
+"scripts/*.py" = ["E402"]

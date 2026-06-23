@@ -4,7 +4,16 @@ from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy import (
-    Boolean, DateTime, Float, ForeignKey, Index, Integer, JSON, String, UniqueConstraint, func
+    JSON,
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    UniqueConstraint,
+    func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -33,10 +42,10 @@ class ViolationEvent(Base):
         DateTime(timezone=True), server_default=func.now()
     )
 
-    evidence_files: Mapped[list["EvidenceFile"]] = relationship(
+    evidence_files: Mapped[list[EvidenceFile]] = relationship(
         back_populates="event", cascade="all, delete-orphan"
     )
-    dispatches: Mapped[list["AlertDispatch"]] = relationship(
+    dispatches: Mapped[list[AlertDispatch]] = relationship(
         back_populates="event", cascade="all, delete-orphan"
     )
 
@@ -57,7 +66,7 @@ class EvidenceFile(Base):
     kind: Mapped[str] = mapped_column(String(16))  # "full" | "crop"
     path: Mapped[str] = mapped_column(String(512))
 
-    event: Mapped["ViolationEvent"] = relationship(back_populates="evidence_files")
+    event: Mapped[ViolationEvent] = relationship(back_populates="evidence_files")
 
 
 class AlertDispatch(Base):
@@ -72,4 +81,4 @@ class AlertDispatch(Base):
     error: Mapped[str] = mapped_column(String(512), default="")
     dispatched_at: Mapped[float] = mapped_column(Float)
 
-    event: Mapped["ViolationEvent"] = relationship(back_populates="dispatches")
+    event: Mapped[ViolationEvent] = relationship(back_populates="dispatches")

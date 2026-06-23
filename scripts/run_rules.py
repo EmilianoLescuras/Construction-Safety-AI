@@ -9,11 +9,10 @@ Default outputs go to ``outputs/logs/<stem>_events.jsonl``.
 from __future__ import annotations
 
 import argparse
-import json
+import sys
 from collections import Counter
 from pathlib import Path
 
-import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.rule_engine import Config, RuleEngine
 from src.tracking import JsonlWriter, iter_jsonl

@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+.git
+.env
+.env.*
+.DS_Store
+*.log
+README.md
+AGENTS.md
+CLAUDE.md

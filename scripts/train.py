@@ -127,7 +127,9 @@ def main() -> None:
         }
         try:
             per_class = {}
-            for cid, ap50 in zip(metrics_box.ap_class_index.tolist(), metrics_box.ap50.tolist()):
+            for cid, ap50 in zip(
+                metrics_box.ap_class_index.tolist(), metrics_box.ap50.tolist(), strict=False
+            ):
                 per_class[int(cid)] = float(ap50)
             metrics["per_class_AP50"] = per_class
         except Exception:

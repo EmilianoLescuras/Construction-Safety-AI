@@ -4,12 +4,10 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from src.alerts.base import AlertContext, AlertSink
 from src.alerts.console import ConsoleSink
 from src.alerts.evidence import EvidenceConfig
-
 
 SINK_REGISTRY: dict[str, type] = {"console": ConsoleSink}
 
@@ -52,7 +50,7 @@ class AlertDispatcher:
         self.sinks = sinks
 
     @classmethod
-    def from_config(cls, config: dict) -> "AlertDispatcher":
+    def from_config(cls, config: dict) -> AlertDispatcher:
         sinks: list[AlertSink] = []
         for name, spec in (config.get("sinks", {}) or {}).items():
             if not spec.get("enabled"):

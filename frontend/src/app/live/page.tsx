@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { RuleBadge } from "@/components/event-badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,18 +13,15 @@ const POLL_MS = 3000;
 
 export default function LivePage() {
   const [paused, setPaused] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  const { data, isLoading, error, isFetching } = useQuery({
+  const { data, isLoading, error, isFetching, dataUpdatedAt } = useQuery({
     queryKey: ["live-events"],
     queryFn: () => api.listEvents({ limit: 20 }),
     refetchInterval: paused ? false : POLL_MS,
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    if (data) setLastUpdated(new Date());
-  }, [data]);
+  const lastUpdated = dataUpdatedAt ? new Date(dataUpdatedAt) : null;
 
   return (
     <div className="space-y-6">

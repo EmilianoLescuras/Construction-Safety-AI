@@ -1,0 +1,14 @@
+# Construction Safety AI — Backend API container deps (no CV/ML stack).
+# Used by docker/api/Dockerfile + CI. Keep aligned with the *backend* lines
+# of requirements.txt — leave torch/opencv/ultralytics out of this file.
+
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+python-multipart>=0.0.9
+python-dotenv>=1.0.1
+
+sqlalchemy>=2.0.30
+alembic>=1.13.0
+psycopg2-binary>=2.9.9
