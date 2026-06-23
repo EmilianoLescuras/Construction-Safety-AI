@@ -1,0 +1,25 @@
+path: /Users/nanolescuras/construction_safety_ai/datasets
+train: train/images
+val: valid/images
+test: test/images
+nc: 19
+names:
+- Excavator
+- Gloves
+- Hardhat
+- Ladder
+- Mask
+- NO-Hardhat
+- NO-Mask
+- NO-Safety Vest
+- Person
+- Safety Cone
+- Safety Vest
+- dump truck
+- machinery
+- sedan
+- trailer
+- truck
+- van
+- vehicle
+- wheel loader
