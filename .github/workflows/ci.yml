@@ -26,7 +26,7 @@ jobs:
           pip install ruff pytest httpx
 
       - name: Ruff check
-        run: ruff check src/backend src/alerts scripts tests
+        run: ruff check src scripts tests
 
       - name: Alembic upgrade head (sqlite)
         env:

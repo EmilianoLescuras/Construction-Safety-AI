@@ -13,43 +13,22 @@ Colors are in OpenCV BGR order.
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 import cv2
 import numpy as np
 
+from src.colors import BLUE, CATEGORY_COLORS, CYAN, GREEN, RED, YELLOW  # re-export
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MODEL = PROJECT_ROOT / "models" / "yolov8n_construction_safety_e40_cache.pt"
 
-# BGR
-RED = (0, 0, 255)
-GREEN = (0, 200, 0)
-YELLOW = (0, 220, 220)
-CYAN = (220, 220, 0)
-BLUE = (220, 100, 0)
-
-CATEGORY_COLORS: dict[str, tuple[int, int, int]] = {
-    "NO-Hardhat": RED,
-    "NO-Mask": RED,
-    "NO-Safety Vest": RED,
-    "Hardhat": GREEN,
-    "Mask": GREEN,
-    "Safety Vest": GREEN,
-    "Gloves": GREEN,
-    "Person": YELLOW,
-    "Safety Cone": CYAN,
-    "Ladder": CYAN,
-    "Excavator": BLUE,
-    "machinery": BLUE,
-    "dump truck": BLUE,
-    "sedan": BLUE,
-    "van": BLUE,
-    "truck": BLUE,
-    "trailer": BLUE,
-    "vehicle": BLUE,
-    "wheel loader": BLUE,
-}
+__all__ = [
+    "BLUE", "CYAN", "GREEN", "RED", "YELLOW",
+    "CATEGORY_COLORS", "PROJECT_ROOT", "DEFAULT_MODEL",
+    "load_model", "predict_and_annotate",
+]
 
 
 def load_model(model_path: Path | str | None = None):
@@ -83,7 +62,7 @@ def annotate_frame(
     confs = boxes.conf.cpu().numpy()
     clss = boxes.cls.cpu().numpy().astype(int)
 
-    for (x1, y1, x2, y2), conf, cid in zip(xyxy, confs, clss):
+    for (x1, y1, x2, y2), conf, cid in zip(xyxy, confs, clss, strict=False):
         if conf < conf_threshold:
             continue
         name = class_names[cid]

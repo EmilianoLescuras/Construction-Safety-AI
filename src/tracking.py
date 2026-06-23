@@ -15,13 +15,13 @@ engine), with one entry per tracked detection:
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 import cv2
 import numpy as np
 
-from src.inference import CATEGORY_COLORS
+from src.colors import CATEGORY_COLORS
 
 
 def track_frame(
@@ -64,7 +64,7 @@ def annotate_tracked_frame(
         else np.full(len(xyxy), -1, dtype=int)
     )
 
-    for (x1, y1, x2, y2), conf, cid, tid in zip(xyxy, confs, clss, ids):
+    for (x1, y1, x2, y2), conf, cid, tid in zip(xyxy, confs, clss, ids, strict=False):
         if conf < conf_threshold:
             continue
         name = class_names[cid]
@@ -107,7 +107,7 @@ def tracks_to_record(frame_id: int, ts: float, result, class_names: list[str]) -
         else np.full(len(xyxy), -1, dtype=int)
     )
 
-    for (x1, y1, x2, y2), conf, cid, tid in zip(xyxy, confs, clss, ids):
+    for (x1, y1, x2, y2), conf, cid, tid in zip(xyxy, confs, clss, ids, strict=False):
         record["tracks"].append({
             "id": int(tid),
             "class": class_names[cid],
@@ -133,7 +133,7 @@ class JsonlWriter:
         if not self._fh.closed:
             self._fh.close()
 
-    def __enter__(self) -> "JsonlWriter":
+    def __enter__(self) -> JsonlWriter:
         return self
 
     def __exit__(self, *_exc) -> None:

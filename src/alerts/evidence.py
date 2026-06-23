@@ -13,11 +13,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-import cv2
-import numpy as np
+from src.colors import CATEGORY_COLORS
 
-from src.inference import CATEGORY_COLORS
+if TYPE_CHECKING:
+    import numpy as np  # noqa: F401  (only for type checkers)
 
 
 @dataclass
@@ -31,6 +32,8 @@ class EvidenceConfig:
 
 
 def _annotate(frame: np.ndarray, event: dict) -> np.ndarray:
+    import cv2
+
     out = frame.copy()
     pbb = event.get("person_bbox")
     vbb = event.get("violation_bbox")
@@ -75,6 +78,8 @@ def save_evidence(
     project_root: Path,
 ) -> tuple[Path | None, Path | None]:
     """Write evidence images for one event. Returns (full_path, crop_path)."""
+    import cv2
+
     if not config.enabled or frame is None:
         return (None, None)
 

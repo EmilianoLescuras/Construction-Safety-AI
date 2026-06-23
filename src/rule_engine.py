@@ -39,10 +39,9 @@ ViolationEvent schema (one JSON object per line in the output JSONL):
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, Iterator
-
 
 # ── Geometry helpers ─────────────────────────────────────────────────────────
 
@@ -74,7 +73,7 @@ class Rule:
     cooldown_seconds: float
 
     @classmethod
-    def from_dict(cls, name: str, d: dict) -> "Rule":
+    def from_dict(cls, name: str, d: dict) -> Rule:
         return cls(
             name=name,
             enabled=bool(d.get("enabled", True)),
@@ -92,7 +91,7 @@ class Config:
     min_person_conf: float = 0.3
 
     @classmethod
-    def from_path(cls, path: Path | str) -> "Config":
+    def from_path(cls, path: Path | str) -> Config:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
         rules = [Rule.from_dict(name, r) for name, r in data.get("rules", {}).items()]
         assoc = data.get("association", {})
