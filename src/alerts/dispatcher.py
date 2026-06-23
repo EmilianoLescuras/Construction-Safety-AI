@@ -27,8 +27,17 @@ def _maybe_register_email() -> None:
     SINK_REGISTRY["email"] = EmailSink
 
 
+def _maybe_register_db() -> None:
+    try:
+        from src.alerts.db import DbSink
+        SINK_REGISTRY["db"] = DbSink
+    except ImportError:
+        pass
+
+
 _maybe_register_telegram()
 _maybe_register_email()
+_maybe_register_db()
 
 
 @dataclass
@@ -59,13 +68,36 @@ class AlertDispatcher:
         return cls(sinks=sinks)
 
     def dispatch(self, ctx: AlertContext) -> list[DispatchResult]:
+        # Audit sinks (e.g. DbSink) run first so they have the event row
+        # in place before they're asked to record the other sinks' results.
+        audit_sinks = [s for s in self.sinks if getattr(s, "is_audit_sink", False)]
+        regular_sinks = [s for s in self.sinks if not getattr(s, "is_audit_sink", False)]
+
         results: list[DispatchResult] = []
-        for sink in self.sinks:
+        live_audit_sinks: list[AlertSink] = []
+        for sink in audit_sinks:
+            try:
+                sink.send(ctx)
+                results.append(DispatchResult(sink=sink.name, success=True))
+                live_audit_sinks.append(sink)
+            except Exception as exc:
+                results.append(DispatchResult(sink=sink.name, success=False, error=str(exc)))
+
+        for sink in regular_sinks:
             try:
                 sink.send(ctx)
                 results.append(DispatchResult(sink=sink.name, success=True))
             except Exception as exc:
                 results.append(DispatchResult(sink=sink.name, success=False, error=str(exc)))
+
+        for sink in live_audit_sinks:
+            record = getattr(sink, "record_audit", None)
+            if record is None:
+                continue
+            try:
+                record(ctx, results)
+            except Exception as exc:
+                print(f"[alerts] audit sink '{sink.name}' record_audit failed: {exc}")
         return results
 
     def close(self) -> None:

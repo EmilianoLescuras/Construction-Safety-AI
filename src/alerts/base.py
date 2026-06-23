@@ -18,6 +18,7 @@ class AlertContext:
     event: dict
     full_frame_path: Path | None = None
     crop_path: Path | None = None
+    source: str | None = None
     extra: dict = field(default_factory=dict)
 
     def headline(self) -> str:

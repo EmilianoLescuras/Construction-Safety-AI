@@ -45,12 +45,15 @@ def main() -> None:
     parser.add_argument("--audit-out", type=Path, default=None,
                         help="Output audit JSONL (default: derived from events name)")
     parser.add_argument("--no-video", action="store_true", help="Skip evidence even if --video set")
+    parser.add_argument("--source", type=str, default=None,
+                        help="Source tag stored on DB rows (default: events filename)")
     args = parser.parse_args()
 
     events_path = args.events.expanduser().resolve()
     if not events_path.is_file():
         raise SystemExit(f"Events file not found: {events_path}")
     cfg, evidence_cfg = load_alerts_config(args.config)
+    source_tag = args.source or events_path.name
 
     audit_path = args.audit_out or (PROJECT_ROOT / "outputs" / "logs"
                                     / f"{events_path.stem.removesuffix('_events')}_alerts_audit.jsonl")
@@ -90,7 +93,8 @@ def main() -> None:
                 if frame is not None and evidence_cfg.enabled:
                     full_path, crop_path = save_evidence(frame, event, evidence_cfg, PROJECT_ROOT)
 
-                ctx = AlertContext(event=event, full_frame_path=full_path, crop_path=crop_path)
+                ctx = AlertContext(event=event, full_frame_path=full_path,
+                                   crop_path=crop_path, source=source_tag)
                 results = dispatcher.dispatch(ctx)
                 for r in results:
                     if r.success:

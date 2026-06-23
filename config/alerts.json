@@ -1,7 +1,10 @@
 {
-  "_doc": "Alert dispatch configuration. Each sink is independent; a failure in one does not stop the others. Telegram and email read their secrets from .env (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, SMTP_*, ALERT_EMAIL_*). The 'evidence' section controls cropped-image rendering for each dispatched event.",
+  "_doc": "Alert dispatch configuration. Each sink is independent; a failure in one does not stop the others. Telegram and email read their secrets from .env (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, SMTP_*, ALERT_EMAIL_*). The 'db' sink is an audit sink: it runs first to persist the ViolationEvent + EvidenceFile rows, then records every other sink's DispatchResult as an AlertDispatch. Reads DATABASE_URL from env via backend.config.settings unless 'database_url' is set here. The 'evidence' section controls cropped-image rendering for each dispatched event.",
   "sinks": {
     "console": {
+      "enabled": true
+    },
+    "db": {
       "enabled": true
     },
     "telegram": {
