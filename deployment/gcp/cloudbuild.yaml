@@ -1,0 +1,78 @@
+# Cloud Build pipeline: build + push api & frontend images, then trigger
+# Cloud Run deploys. Wire this as a trigger on pushes to `main`.
+#
+# Required substitutions:
+#   _REGION   - e.g. us-central1
+#   _API_URL  - eventual API Cloud Run URL (baked into the frontend)
+steps:
+  # API image
+  - id: build-api
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --file=docker/api/Dockerfile
+      - --tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-api:$SHORT_SHA
+      - --tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-api:latest
+      - .
+
+  - id: push-api
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - --all-tags
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-api
+
+  # Frontend image
+  - id: build-frontend
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --file=docker/frontend/Dockerfile
+      - --build-arg=NEXT_PUBLIC_API_URL=${_API_URL}
+      - --tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-frontend:$SHORT_SHA
+      - --tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-frontend:latest
+      - frontend/
+
+  - id: push-frontend
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - --all-tags
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-frontend
+
+  # Run alembic migrations
+  - id: migrate
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args: ['run', 'jobs', 'execute', 'cs-migrate', '--region=${_REGION}', '--wait']
+
+  # Deploy API
+  - id: deploy-api
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - cs-api
+      - --image=${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-api:$SHORT_SHA
+      - --region=${_REGION}
+      - --platform=managed
+
+  # Deploy Frontend
+  - id: deploy-frontend
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - cs-frontend
+      - --image=${_REGION}-docker.pkg.dev/$PROJECT_ID/cs-images/cs-frontend:$SHORT_SHA
+      - --region=${_REGION}
+      - --platform=managed
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _REGION: us-central1
+  _API_URL: https://placeholder.run.app
