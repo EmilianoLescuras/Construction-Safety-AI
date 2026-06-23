@@ -24,6 +24,7 @@ DATA_YAML = PROJECT_ROOT / "config" / "data.yaml"
 MODELS_DIR = PROJECT_ROOT / "models"
 RUNS_DIR = PROJECT_ROOT / "runs"
 DOCS_DIR = PROJECT_ROOT / "docs" / "experiments"
+MLRUNS_DIR = PROJECT_ROOT / "mlruns"
 
 
 def pick_device() -> str:
@@ -76,6 +77,17 @@ def main() -> None:
         default=True,
         help="Cache images in RAM (--cache / --no-cache). Big speedup for small datasets.",
     )
+    parser.add_argument(
+        "--mlflow",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Log params/metrics/artifacts to ./mlruns/ (--mlflow / --no-mlflow).",
+    )
+    parser.add_argument(
+        "--mlflow-experiment",
+        default="construction-safety",
+        help="MLflow experiment name.",
+    )
     args = parser.parse_args()
 
     if not DATA_YAML.exists():
@@ -90,54 +102,99 @@ def main() -> None:
     print(f"[train] run_name={run_name}")
     print(f"[train] data={DATA_YAML}")
 
-    model = YOLO(args.model)
-    results = model.train(
-        data=str(DATA_YAML),
-        epochs=args.epochs,
-        imgsz=args.imgsz,
-        batch=args.batch,
-        device=device,
-        project=str(RUNS_DIR / "detect"),
-        name=run_name,
-        exist_ok=True,
-        patience=args.patience,
-        cache=args.cache,
-        verbose=True,
-    )
-
-    run_dir = Path(results.save_dir)
-    best_pt = run_dir / "weights" / "best.pt"
-
-    MODELS_DIR.mkdir(parents=True, exist_ok=True)
-    dest = MODELS_DIR / f"{run_name}.pt"
-    if best_pt.exists():
-        shutil.copy2(best_pt, dest)
-        print(f"[train] Copied best weights → {dest.relative_to(PROJECT_ROOT)}")
-    else:
-        print(f"[train] WARNING: best.pt not found at {best_pt}")
-
-    metrics_box = getattr(results, "box", None)
-    metrics = {}
-    if metrics_box is not None:
-        metrics = {
-            "precision": float(metrics_box.mp),
-            "recall": float(metrics_box.mr),
-            "mAP50": float(metrics_box.map50),
-            "mAP50-95": float(metrics_box.map),
-        }
+    mlflow = None
+    if args.mlflow:
         try:
-            per_class = {}
-            for cid, ap50 in zip(
-                metrics_box.ap_class_index.tolist(), metrics_box.ap50.tolist(), strict=False
-            ):
-                per_class[int(cid)] = float(ap50)
-            metrics["per_class_AP50"] = per_class
-        except Exception:
-            pass
+            import mlflow as _mlflow
 
-    summary = write_summary(run_name, args, device, metrics, run_dir)
-    print(f"[train] Summary → {summary.relative_to(PROJECT_ROOT)}")
-    print("[train] Done.")
+            MLRUNS_DIR.mkdir(parents=True, exist_ok=True)
+            _mlflow.set_tracking_uri(MLRUNS_DIR.as_uri())
+            _mlflow.set_experiment(args.mlflow_experiment)
+            mlflow = _mlflow
+        except ImportError:
+            print("[train] mlflow not installed, skipping tracking (pip install mlflow).")
+
+    run_ctx = mlflow.start_run(run_name=run_name) if mlflow else None
+    try:
+        if mlflow:
+            mlflow.log_params({
+                "model": args.model,
+                "epochs": args.epochs,
+                "imgsz": args.imgsz,
+                "batch": args.batch,
+                "device": device,
+                "patience": args.patience,
+                "cache": args.cache,
+                "data_yaml": str(DATA_YAML.relative_to(PROJECT_ROOT)),
+            })
+
+        model = YOLO(args.model)
+        results = model.train(
+            data=str(DATA_YAML),
+            epochs=args.epochs,
+            imgsz=args.imgsz,
+            batch=args.batch,
+            device=device,
+            project=str(RUNS_DIR / "detect"),
+            name=run_name,
+            exist_ok=True,
+            patience=args.patience,
+            cache=args.cache,
+            verbose=True,
+        )
+
+        run_dir = Path(results.save_dir)
+        best_pt = run_dir / "weights" / "best.pt"
+
+        MODELS_DIR.mkdir(parents=True, exist_ok=True)
+        dest = MODELS_DIR / f"{run_name}.pt"
+        if best_pt.exists():
+            shutil.copy2(best_pt, dest)
+            print(f"[train] Copied best weights → {dest.relative_to(PROJECT_ROOT)}")
+        else:
+            print(f"[train] WARNING: best.pt not found at {best_pt}")
+
+        metrics_box = getattr(results, "box", None)
+        metrics: dict = {}
+        if metrics_box is not None:
+            metrics = {
+                "precision": float(metrics_box.mp),
+                "recall": float(metrics_box.mr),
+                "mAP50": float(metrics_box.map50),
+                "mAP50-95": float(metrics_box.map),
+            }
+            try:
+                per_class = {}
+                for cid, ap50 in zip(
+                    metrics_box.ap_class_index.tolist(), metrics_box.ap50.tolist(), strict=False
+                ):
+                    per_class[int(cid)] = float(ap50)
+                metrics["per_class_AP50"] = per_class
+            except Exception:
+                pass
+
+        summary = write_summary(run_name, args, device, metrics, run_dir)
+        print(f"[train] Summary → {summary.relative_to(PROJECT_ROOT)}")
+
+        if mlflow:
+            for k in ("precision", "recall", "mAP50", "mAP50-95"):
+                if k in metrics:
+                    mlflow.log_metric(k.replace("-", "_"), metrics[k])
+            for cid, ap in (metrics.get("per_class_AP50") or {}).items():
+                mlflow.log_metric(f"AP50_class_{cid}", ap)
+            if best_pt.exists():
+                mlflow.log_artifact(str(best_pt), artifact_path="weights")
+            for name in ("results.csv", "confusion_matrix.png", "results.png"):
+                f = run_dir / name
+                if f.exists():
+                    mlflow.log_artifact(str(f), artifact_path="run")
+            mlflow.log_artifact(str(summary), artifact_path="run")
+            print(f"[train] MLflow run logged: {mlflow.active_run().info.run_id}")
+
+        print("[train] Done.")
+    finally:
+        if run_ctx is not None:
+            mlflow.end_run()
 
 
 if __name__ == "__main__":
