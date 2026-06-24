@@ -223,9 +223,19 @@ export default function DemoPage() {
                   What you&apos;re watching
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  YOLOv8 detects PPE per frame, ByteTrack assigns persistent
-                  worker IDs, and the rule engine fires an event when a worker
-                  stays out of compliance for ≥3 seconds.
+                  A 15s CC0 construction-site clip from{" "}
+                  <a
+                    href="https://www.pexels.com/video/construction-workers-working-9227135/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    Pexels
+                  </a>
+                  , processed end-to-end on a MacBook: YOLOv8 detects PPE per
+                  frame at ~52 fps, ByteTrack assigns persistent worker IDs
+                  (98 unique tracks), and the rule engine fires an event when a
+                  worker stays out of compliance for ≥3s.
                 </p>
               </div>
               <div className="space-y-3">
