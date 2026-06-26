@@ -223,20 +223,20 @@ export default function DemoPage() {
                   What you&apos;re watching
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  A 15s CC0 construction-site clip from{" "}
-                  <a
-                    href="https://www.pexels.com/video/construction-workers-working-9227135/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline underline-offset-2 hover:text-foreground"
-                  >
-                    Pexels
-                  </a>
-                  , processed end-to-end on a MacBook: YOLOv8 detects PPE per
-                  frame at ~52 fps, ByteTrack assigns persistent worker IDs
-                  (98 unique tracks), and the rule engine fires an event when a
-                  worker stays out of compliance for ≥3s.
+                  A 28s construction-site recording processed end-to-end on a
+                  MacBook: YOLOv8 detects PPE + vehicles per frame at ~60 fps,
+                  ByteTrack assigns persistent IDs (36 unique tracks across 844
+                  frames), and the rule engine fires an event when a worker
+                  stays out of compliance for ≥3s.
                 </p>
+                <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                  <span>✓ Hardhat — 4 IDs</span>
+                  <span className="text-red-600">✕ NO-Hardhat — 2 IDs</span>
+                  <span>✓ Safety Vest — 8 IDs</span>
+                  <span className="text-red-600">✕ NO-Safety Vest — 10 IDs</span>
+                  <span>🚐 sedan / camioneta — 4 IDs</span>
+                  <span>🏗 machinery — 6 IDs</span>
+                </div>
               </div>
               <div className="space-y-3">
                 {RULES.map((r) => (
