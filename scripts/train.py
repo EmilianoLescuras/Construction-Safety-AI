@@ -65,6 +65,8 @@ def write_summary(run_name: str, args: argparse.Namespace, device: str, metrics:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", default="yolov8n.pt", help="Base weights (yolov8n.pt / yolov8s.pt / yolov8m.pt)")
+    parser.add_argument("--data", type=Path, default=DATA_YAML,
+                        help="Path to dataset yaml (default: config/data.yaml)")
     parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--imgsz", type=int, default=640)
     parser.add_argument("--batch", type=int, default=16)
@@ -90,8 +92,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if not DATA_YAML.exists():
-        raise SystemExit(f"Missing {DATA_YAML}. Run scripts/prepare_dataset.py first.")
+    data_yaml = args.data.expanduser().resolve()
+    if not data_yaml.exists():
+        raise SystemExit(f"Missing {data_yaml}. Run scripts/prepare_dataset.py first.")
 
     from ultralytics import YOLO
 
@@ -100,7 +103,7 @@ def main() -> None:
 
     print(f"[train] model={args.model} epochs={args.epochs} imgsz={args.imgsz} batch={args.batch} device={device}")
     print(f"[train] run_name={run_name}")
-    print(f"[train] data={DATA_YAML}")
+    print(f"[train] data={data_yaml}")
 
     mlflow = None
     if args.mlflow:
@@ -125,12 +128,12 @@ def main() -> None:
                 "device": device,
                 "patience": args.patience,
                 "cache": args.cache,
-                "data_yaml": str(DATA_YAML.relative_to(PROJECT_ROOT)),
+                "data_yaml": str(data_yaml.relative_to(PROJECT_ROOT) if data_yaml.is_relative_to(PROJECT_ROOT) else data_yaml),
             })
 
         model = YOLO(args.model)
         results = model.train(
-            data=str(DATA_YAML),
+            data=str(data_yaml),
             epochs=args.epochs,
             imgsz=args.imgsz,
             batch=args.batch,

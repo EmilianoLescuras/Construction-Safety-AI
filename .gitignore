@@ -53,6 +53,7 @@ datasets/processed/**/*
 datasets/train/**/*
 datasets/valid/**/*
 datasets/test/**/*
+datasets/v2_inbox/**/*
 !datasets/**/README.md
 !datasets/**/.gitkeep
 
