@@ -15,6 +15,7 @@ Image URLs use Label Studio's local-files endpoint:
 """
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -74,7 +75,32 @@ def yolo_line_to_ls_result(line: str, classes: list[str]) -> dict | None:
     }
 
 
+def image_url(rel: str, http_base: str | None) -> str:
+    """Build the task image URL.
+
+    With ``--http-base`` (recommended), emit an absolute URL served by a
+    plain static HTTP server (``python -m http.server`` rooted at the
+    project) — the browser ``<img>`` loads it directly, no Label Studio
+    local-files config or auth involved. Without it, fall back to Label
+    Studio's ``/data/local-files/?d=`` endpoint (needs the serving env
+    vars and is finicky on LS >= 1.23).
+    """
+    if http_base:
+        return f"{http_base.rstrip('/')}/{rel}"
+    return f"/data/local-files/?d={rel}"
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--http-base",
+        default=None,
+        help="Base URL of a static server rooted at the project root, e.g. "
+             "http://localhost:8082 . If set, image URLs are absolute http "
+             "URLs instead of Label Studio local-files paths.",
+    )
+    args = parser.parse_args()
+
     if not CLASSES_FILE.exists():
         raise SystemExit(f"Missing {CLASSES_FILE}")
     classes = CLASSES_FILE.read_text().strip().splitlines()
@@ -105,7 +131,7 @@ def main() -> None:
 
         rel = img_path.relative_to(PROJECT_ROOT).as_posix()
         tasks.append({
-            "data": {"image": f"/data/local-files/?d={rel}"},
+            "data": {"image": image_url(rel, args.http_base)},
             "predictions": [{
                 "model_version": "yolov8n_v1_pseudo",
                 "score": 0.5,
