@@ -12,6 +12,6 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PORT="${IMG_PORT:-8082}"
-echo "[serve-images] root=$PWD"
-echo "[serve-images] http://localhost:$PORT/datasets/v2_inbox/images/"
-exec .venv/bin/python -m http.server "$PORT" --bind 127.0.0.1
+# Use the CORS-enabled server (plain http.server lacks the
+# Access-Control-Allow-Origin header Label Studio's canvas loader needs).
+exec .venv/bin/python scripts/serve_inbox_images.py --port "$PORT" --bind 127.0.0.1
