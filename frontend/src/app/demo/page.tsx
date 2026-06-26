@@ -224,19 +224,49 @@ export default function DemoPage() {
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   A 28s construction-site recording processed end-to-end on a
-                  MacBook: YOLOv8 detects PPE + vehicles per frame at ~60 fps,
-                  ByteTrack assigns persistent IDs (36 unique tracks across 844
-                  frames), and the rule engine fires an event when a worker
-                  stays out of compliance for ≥3s.
+                  MacBook: YOLOv8 detects PPE + vehicles per frame at ~65 fps,
+                  ByteTrack assigns persistent IDs (24 unique tracks across 844
+                  frames at conf≥0.40), and the rule engine fires an event when
+                  a worker stays out of compliance for ≥3s.
                 </p>
                 <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                  <span>✓ Hardhat — 4 IDs</span>
+                  <span>✓ Hardhat — 2 IDs</span>
                   <span className="text-red-600">✕ NO-Hardhat — 2 IDs</span>
-                  <span>✓ Safety Vest — 8 IDs</span>
-                  <span className="text-red-600">✕ NO-Safety Vest — 10 IDs</span>
-                  <span>🚐 sedan / camioneta — 4 IDs</span>
-                  <span>🏗 machinery — 6 IDs</span>
+                  <span>✓ Safety Vest — 9 IDs</span>
+                  <span className="text-red-600">✕ NO-Safety Vest — 7 IDs</span>
+                  <span>🚐 sedan* — 2 IDs</span>
+                  <span>🏗 machinery — 2 IDs</span>
                 </div>
+                <details className="mt-3 rounded-md border border-amber-500/30 bg-amber-500/5 p-3 text-xs">
+                  <summary className="cursor-pointer font-medium text-amber-700 dark:text-amber-400">
+                    Known v1 limitations on this clip
+                  </summary>
+                  <ul className="mt-2 space-y-1.5 text-muted-foreground">
+                    <li>
+                      <strong>* &ldquo;sedan&rdquo; on a pickup truck.</strong>{" "}
+                      The training dataset has 19 classes but no dedicated{" "}
+                      <code>pickup</code> class — only{" "}
+                      <code>sedan / van / truck / dump truck</code>. The white
+                      Hilux-style vehicle gets sorted into the closest bucket
+                      (<code>sedan</code>). Fix is a v2 taxonomy split — see
+                      below.
+                    </li>
+                    <li>
+                      <strong>False NO-Safety Vest on yellow long-sleeve
+                      shirts.</strong> The dataset only labels classic
+                      reflective vests worn over clothing as{" "}
+                      <code>Safety Vest</code>. Argentine-style high-vis work
+                      shirts read as &ldquo;no vest&rdquo;. Bumping confidence
+                      from 0.25 → 0.40 dropped most of these; the rest need a
+                      relabel pass in v2.
+                    </li>
+                    <li>
+                      Baseline metrics: mAP50 = 0.577, recall = 0.528 — so
+                      ~40% of true objects can still be missed at IoU 0.5. v2
+                      target ≥ 0.80.
+                    </li>
+                  </ul>
+                </details>
               </div>
               <div className="space-y-3">
                 {RULES.map((r) => (

@@ -17,15 +17,37 @@ PPE compliance. v2 is about closing that gap.
 
 ## v2 work items
 
-### 1. Vehicle taxonomy collapse  *(no new labels needed)*
+### 1. Vehicle taxonomy collapse + add `pickup`  *(needs some relabel)*
 
 The dataset has `vehicle`, `truck`, `dump truck`, `van`, `sedan`, `trailer`,
-`wheel loader`, `machinery` — many of them sparse. Collapse to two classes
-(`vehicle`, `heavy_machinery`) and retrain. Expected: per-class AP gains
-from sample-size jumps, no impact on the rule engine (no vehicle rules).
+`wheel loader`, `machinery` — many of them sparse. **Critically, there is
+no `pickup` class**, so Hilux/Ranger/Frontier-style trucks (extremely
+common on LATAM/AR sites) currently get sorted into `sedan` with high
+confidence (observed live on the user-recorded clip: a white pickup gets
+labelled `sedan 0.71`).
+
+Plan:
+1. Collapse the existing sparse passenger-car classes (`sedan`, `van`,
+   `vehicle`) into a single `light_vehicle` bucket.
+2. Promote `pickup` to its own class. Source ~300 labelled pickups from
+   Roboflow Universe (`pickup-truck` searches) and merge.
+3. Keep heavy machinery split (`wheel_loader`, `dump_truck`, `excavator`,
+   `machinery`) — those are operationally distinct and worth tracking.
 
 **Estimated effort**: 30 min editing `config/data.yaml` + remapping label
-files + one 40-epoch run.
+files + 2-3h sourcing/merging pickup labels + one 40-epoch run.
+
+### 1b. High-visibility work shirts as Safety Vest  *(needs relabel)*
+
+The current `Safety Vest` class only covers classic reflective vests worn
+**over** clothing. Long-sleeve hi-vis work shirts (yellow/orange with
+reflective tape, very common on AR construction sites) get flagged as
+`NO-Safety Vest` even when the worker is fully compliant. Observed live
+on the user-recorded clip on a crouching worker in a yellow shirt.
+
+Plan: relabel existing train/val shots where workers wear hi-vis shirts
+to `Safety Vest`. ~150-200 boxes is enough to teach the new visual
+pattern. Same training run as 1.
 
 ### 2. Source additional labelled data for sparse PPE  *(needs labelling)*
 
