@@ -56,6 +56,7 @@ datasets/test/**/*
 datasets/v2_inbox/**/*
 !datasets/**/README.md
 !datasets/**/.gitkeep
+!datasets/**/REVIEW.md
 
 # ── Outputs (generated artifacts) ─────────────────────────────────────────────
 outputs/images/**/*
