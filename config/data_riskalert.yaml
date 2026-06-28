@@ -1,0 +1,46 @@
+# riskalert-mining pivot dataset (34 classes, Spanish, mining + PPE + road state).
+# Replaces the original 19-class construction set per the 2026-06-28 pivot.
+# Source: Roboflow emilianos-workspace-6gmup/riskalert-mining-r07if v1.
+# Data lives outside the repo (gitignored); absolute paths so train/val work
+# regardless of CWD.
+path: /Users/nanolescuras/Downloads/riskalert-mining-pivot.yolov8
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 34
+names:
+  - ANIMAL
+  - CAMIONETA
+  - CARGADOR_FRONTAL
+  - CISTERNA_AGUA
+  - CONOS_DELIMITADORES
+  - EXCAVADORA
+  - MINIBUS
+  - MOTONIVELADORA
+  - PERSONA
+  - PERSONA_CON_CASCO
+  - PERSONA_CON_GUANTES
+  - PERSONA_CON_LENTES
+  - PERSONA_CON_RESPIRADOR
+  - PERSONA_ROPA_CINTA_REFLECTIVA
+  - PERSONA_SIN_CASCO
+  - PERSONA_SIN_CHALECO
+  - PERSONA_SIN_GUANTES
+  - PERSONA_SIN_LENTES
+  - PERSONA_SIN_RESPIRADOR
+  - PERSONA_SIN_ROPA_CINTA_REFLECTIVA
+  - POLVO
+  - RETRO_EXCAVADORA
+  - RODILLO
+  - SENALIZACION
+  - TRACTOR
+  - VIA_BUEN_ESTADO
+  - VIA_CON_MURO_SEGURIDAD
+  - VIA_EN_MAL_ESTADO
+  - VIA_NO_REGADA
+  - VIA_OBSTACULIZADA
+  - VIA_SATURADA
+  - VIA_SENALIZADA
+  - VIA_SIN_MURO_SEGURIDAD
+  - VOLQUETE
