@@ -1,23 +1,28 @@
-# Experiment — yolo26s_riskalert_e60 (YOLO26)
+# Experiment — yolo26s_riskalert_e60 (YOLO26 vs YOLOv8)
 
-_Generated 2026-06-28._
+_Generated 2026-06-29._
 
 ## Summary
 
-Re-trained the riskalert 34-class task with the **YOLO26** architecture (`yolo26s.pt`) — the model family the user actually wanted (the dataset is exported in YOLO26 format). Compared against the earlier **yolov8s** run on the same dataset/splits.
+Trained the riskalert 34-class task with **YOLO26** (`yolo26s.pt`) — the architecture the dataset is exported for — and compared it head-to-head with the **yolov8s** run on the same dataset/splits.
 
-> ⚠️ **Not a fair comparison yet.** YOLO26 training was **killed at epoch 39/60** (external kill, no crash in log — the Mac most likely slept). Its `best.pt` is epoch 37. The yolov8s baseline ran the **full 60 epochs**. So YOLO26 is handicapped here; a full 60-epoch run is needed to conclude.
+> ✅ **Clean comparison.** This YOLO26 run completed properly: **early-stopped at epoch 57** (patience 20; best epoch 37, no improvement after) — not a kill. yolov8s ran the full 60 (best epoch 36). Both models had their full shot.
 
-## YOLO26 vs YOLOv8 (same dataset, same splits)
+## Results (same dataset, same splits)
 
 | model | split | mAP50 | mAP50-95 | precision | recall |
 |-------|-------|------:|---------:|----------:|-------:|
-| yolov8s (full 60ep) | val | 0.4148 | 0.2387 | 0.4884 | 0.3917 |
-| yolov8s (full 60ep) | test | 0.4123 | 0.2116 | 0.3631 | 0.4275 |
-| yolo26s (cut @39ep) | val | 0.3542 | 0.2245 | 0.5774 | 0.3396 |
-| yolo26s (cut @39ep) | test | 0.3529 | 0.2184 | 0.5919 | 0.3037 |
+| yolov8s | val | 0.4148 | 0.2387 | 0.4884 | 0.3917 |
+| yolov8s | test | 0.4123 | 0.2116 | 0.3631 | 0.4275 |
+| yolo26s | val | 0.3542 | 0.2245 | 0.5774 | 0.3396 |
+| yolo26s | test | 0.3529 | 0.2184 | 0.5919 | 0.3037 |
 
-**Read (test split):** YOLO26 mAP50 0.3529 vs v8 0.4123 (v8 ahead), but YOLO26 precision 0.5919 vs 0.3631 (much higher) and mAP50-95 0.2184 vs 0.2116 (≈ tied). YOLO26 trades recall for precision here. Given YOLO26 stopped 21 epochs early, the mAP50 gap is likely partly undertraining.
+## Verdict (honest)
+
+On this small, imbalanced 34-class set, **yolov8s wins on mAP50 and recall** (test mAP50 0.412 vs 0.353), while **YOLO26 is markedly more precise** (test precision 0.592 vs 0.363) at the cost of recall (0.304 vs 0.428); mAP50-95 is ≈ tied (0.218 vs 0.212).
+
+- 'Newer' (YOLO26) did **not** mean better here — on ~712 images with 15 sparse classes, the lighter yolov8s generalises better at the mAP50 operating point. YOLO26's high precision / low recall suggests it's more conservative; it may shine with more data or longer schedule.
+- **For deployment now, yolov8s is the better detector** on this dataset. Keep YOLO26 if you specifically want fewer false positives.
 
 ## Per-class AP50 — test split (YOLO26)
 
@@ -47,9 +52,5 @@ Re-trained the riskalert 34-class task with the **YOLO26** architecture (`yolo26
 | PERSONA_SIN_GUANTES | 0.0000 |
 | VIA_SIN_MURO_SEGURIDAD | 0.0000 |
 
-## Decision / next
-
-- **Inconclusive** until YOLO26 finishes a full 60-epoch run. Both runs (v8 and 26) have died ~1h in — the machine is sleeping mid-training despite `caffeinate` (likely lid closed on battery).
-- To get a clean YOLO26 number: re-run to 60 epochs with the lid OPEN + plugged in, or lower `--epochs` to ~35 so it finishes inside the awake window.
-- Weights: `models/yolo26s_riskalert_e60.pt` (epoch-37 best, usable).
-- Run it: `inference/detect_image.py --source <img> --model models/yolo26s_riskalert_e60.pt`
+## Weights
+- `models/yolo26s_riskalert_e60.pt` (epoch-37 best, 19M, completed run). Run: `inference/detect_image.py --source <img> --model models/yolo26s_riskalert_e60.pt`
