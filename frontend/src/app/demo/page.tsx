@@ -187,6 +187,36 @@ export default function DemoPage() {
 
   return (
     <div className="space-y-12">
+      {/* MODEL COMPARISON — YOLOv8 vs YOLO26 */}
+      <section className="space-y-6">
+        <div className="space-y-2">
+          <Badge variant="outline" className="text-xs">
+            Comparación de modelos · YOLOv8 vs YOLO26 · dataset riskalert (34 clases)
+          </Badge>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            YOLOv8 vs YOLO26 — mismo dataset, lado a lado
+          </h1>
+          <p className="max-w-3xl text-muted-foreground">
+            Cada imagen del test set procesada por los dos modelos sobre las
+            mismas 34 clases. Izquierda <strong>YOLOv8</strong>, derecha{" "}
+            <strong>YOLO26</strong>. En el test set: YOLOv8 gana en mAP50
+            (0.412 vs 0.353) y recall (0.428 vs 0.304); YOLO26 es más preciso
+            (precisión 0.59 vs 0.36). Mirá la diferencia frame a frame.
+          </p>
+        </div>
+        <Card className="overflow-hidden bg-black">
+          <video
+            src="/demo/compare_v8_vs_yolo26.mp4"
+            controls
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="aspect-video w-full"
+          />
+        </Card>
+      </section>
+
       {/* HERO */}
       <section className="space-y-6">
         <div className="space-y-2">
