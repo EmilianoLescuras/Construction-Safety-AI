@@ -1,5 +1,9 @@
 # Construction Safety AI
 
+[![CI](https://github.com/EmilianoLescuras/Construction-Safety-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/EmilianoLescuras/Construction-Safety-AI/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+
 End-to-end computer-vision platform for **PPE compliance monitoring on
 construction sites**. YOLOv8 detection + ByteTrack persistent IDs + a
 declarative rule engine + a Postgres-backed FastAPI service + a Next.js
