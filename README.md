@@ -22,6 +22,11 @@ dashboard, all packaged with Docker and a green CI.
 
 ## Live demo
 
+**Model comparison** — YOLOv8s vs YOLO26s on the same risk-alert clip,
+rendered side by side ([`frontend/public/demo/compare_v8_vs_yolo26.mp4`](frontend/public/demo/compare_v8_vs_yolo26.mp4)):
+
+https://github.com/EmilianoLescuras/Construction-Safety-AI/blob/main/frontend/public/demo/compare_v8_vs_yolo26.mp4
+
 ![events list](docs/screenshots/events.png)
 ![event detail](docs/screenshots/event_detail.png)
 ![live monitor](docs/screenshots/live.png)
